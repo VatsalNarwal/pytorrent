@@ -1,0 +1,26 @@
+PyTorrent/
+│
+├── README.md               # The file we will generate below
+├── requirements.txt        # dependencies (aiohttp, etc.)
+├── main.py                 # Entry point (CLI)
+│
+├── pytorrent/              # Main package
+│   ├── __init__.py
+│   │
+│   ├── utils/              # Helper functions
+│   │   ├── __init__.py
+│   │   └── bencoder.py     # Step 1: Parser & Encoder
+│   │
+│   ├── core/               # Core Logic
+│   │   ├── __init__.py
+│   │   ├── torrent.py      # Holds metadata (info_hash, file names)
+│   │   ├── tracker.py      # Step 2: Tracker communication
+│   │   ├── peer.py         # Step 3: Connection & Handshake logic
+│   │   └── pieces.py       # Step 4: Piece Manager (Bitfield logic)
+│   │
+│   └── network/            # Asyncio loop management
+│       ├── __init__.py
+│       └── download_manager.py # The conductor (Step 4 implementation)
+│
+└── tests/                  # Unit tests (Highly recommended for the Parser)
+    └── test_bencoder.py
