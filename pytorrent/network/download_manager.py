@@ -9,14 +9,16 @@ from pytorrent.core.peer import BitTorrentPeer
 logger = logging.getLogger(__name__)
 
 class DownloadManager:
-    def __init__(self, torrent_file):
+    def __init__(self, torrent_file, encryption_enabled=False):
         self.torrent = Torrent(torrent_file)
         self.tracker = TrackerManager(self.torrent)
         self.piece_manager = PieceManager(self.torrent)
         self.peers = [] 
+        self.encryption_enabled = encryption_enabled
         
     async def start(self):
         print(f"Starting download for: {self.torrent.name}")
+        print(f"Encryption: {'ENABLED (Hybrid)' if self.encryption_enabled else 'DISABLED (Plaintext)'}")
         
         # --- MULTI-FILE INITIALIZATION ---
         # 1. Ensure directories exist
@@ -45,15 +47,18 @@ class DownloadManager:
             print("Found existing files. Verifying integrity...")
             self.piece_manager.check_disk_integrity()
             
-        # ---------------------------------
-            
         peer_list = await self.tracker.get_peers()
         peer_list = list(set(peer_list)) 
         print(f"Unique peers found: {len(peer_list)}")
         
         MAX_PEERS = 50
         for ip, port in peer_list[:MAX_PEERS]:
-            peer = BitTorrentPeer(ip, port, self.torrent, self.tracker.peer_id, self.piece_manager)
+            peer = BitTorrentPeer(
+                ip, port, self.torrent, 
+                self.tracker.peer_id, 
+                self.piece_manager,
+                encryption_enabled=self.encryption_enabled
+            )
             self.peers.append(peer)
             asyncio.ensure_future(self.full_peer_lifecycle(peer))
             

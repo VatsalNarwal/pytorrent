@@ -1,12 +1,21 @@
-# PyTorrent: Asyncio BitTorrent Client
+# PyTorrent v2: Asyncio BitTorrent Client
 
 A lightweight, asynchronous BitTorrent client built from scratch in Python 3.6 using `asyncio`. 
 Designed to demonstrate networking protocols, binary data manipulation, and concurrent I/O.
 
-## 😋 USAGE
+## 🙂‍↕️ USAGE
+In this version, we have added encryption support to bypass basic ISP throttling (MSE), (if encryption is supported by the peer and enabled by the user).
+
 Download and save the torrent file in the same directory as main.py.
+
+Plain-Text version (Non-encrypted)
 ```
 python main.py <torrent_file>
+```
+
+Hybrid version (Encrypted if supported)
+```
+python main.py <torrent_file> --encrypted
 ```
 
 ## 🚀 Features (Current Focus)
@@ -23,7 +32,7 @@ python main.py <torrent_file>
 - [ ] **Streaming Mode:** Prioritize sequential pieces for video playback.
 - [ ] **AI Optimization:** Smart peer selection/scoring using simple heuristics or ML.
 - [ ] **Privacy Mode:** SOCKS5 Proxy support to mask IP.
-- [ ] **Protocol Obfuscation:** To bypass basic ISP throttling (MSE).
+- [x] **Protocol Obfuscation:** To bypass basic ISP throttling (MSE).
 - [ ] **Content Safety:** ML-based classification of file metadata.
 - [ ] **Reinforcement Learning:** Algorithm for peer selection.
 
@@ -43,9 +52,11 @@ python main.py <torrent_file>
   * Flag suspicious keywords or patterns often associated with malware or illegal content.
 
 * #### **Avoid ISP Blocking**
+  * **SOLVED!** 🤓☝️
   * ISPs block Torrenting by "Deep Packet Inspection" (DPI)—they see the handshake pattern.
   * _Solution:_ Message Stream Encryption (MSE/PE). 
   * Wraps the BitTorrent header in an encrypted stream (RC4) so it looks like random noise to the ISP, rather than a torrent.
+  * *However it is not necesarry that our peers support MSE/PE. If they don't, we will fall back to plain TCP. 💔🥀*
 
 ## 🛠️ Technology Stack
 * **Language:** Python 3.6+

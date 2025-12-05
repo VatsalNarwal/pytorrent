@@ -16,10 +16,14 @@ from pytorrent.network.download_manager import DownloadManager
 def main():
     parser = argparse.ArgumentParser(description="Asyncio BitTorrent Client")
     parser.add_argument('torrent_file', help="Path to the .torrent file")
+    
+    parser.add_argument('--encrypted', action='store_true', help="Enable Message Stream Encryption (MSE)")
+    
     args = parser.parse_args()
 
     try:
-        manager = DownloadManager(args.torrent_file)
+        # Pass the encryption flag to the Manager
+        manager = DownloadManager(args.torrent_file, encryption_enabled=args.encrypted)
         
         loop = asyncio.get_event_loop()
         loop.run_until_complete(manager.start())
