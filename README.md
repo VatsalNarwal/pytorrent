@@ -3,6 +3,12 @@
 A lightweight, asynchronous BitTorrent client built from scratch in Python 3.6 using `asyncio`. 
 Designed to demonstrate networking protocols, binary data manipulation, and concurrent I/O.
 
+## 😋 USAGE
+Download and save the torrent file in the same directory as main.py.
+```
+python main.py <torrent_file>
+```
+
 ## 🚀 Features (Current Focus)
 - [x] **Bencoding Parser/Encoder:** Full support for decoding `.torrent` files and encoding info dictionaries for hashing.
 - [x] **Tracker Communication:** HTTP/UDP support to retrieve peer lists.
